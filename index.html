@@ -10,7 +10,160 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+/* ===== LIBRES Y SIN MIEDO — estilos =====
+   Para cambiar colores, edita las variables de :root. */
+:root{
+  --morado:#321B46; --violeta:#70418D; --lavanda:#A77AC1; --rosa:#E9B5D7; --blanco:#F5EFF8; --naranja:#F28B35;
+  --bg:#F5EFF8; --bg2:#EBDFF2; --tarjeta:#fff; --tinta:#321B46; --suave:#5A4668; --enlace:#70418D; --linea:#d9c6e4;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif; --sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --base:1.0625rem;
+}
+:root[data-theme="dark"]{
+  --bg:#1C0F28; --bg2:#26153A; --tarjeta:#321B46; --tinta:#F5EFF8; --suave:#D5C3E2; --enlace:#E9B5D7; --linea:#4B2D63;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px;font-size:var(--base)}
+body{margin:0;background:var(--bg);color:var(--tinta);font-family:var(--sans);line-height:1.65;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--serif);line-height:1.1;margin:0}
+a{color:var(--enlace)}
+:focus-visible{outline:3px solid var(--naranja);outline-offset:3px;border-radius:4px}
+.wrap{width:min(1080px,100% - 2.5rem);margin-inline:auto}
+.saltar{position:absolute;left:-999px;background:var(--naranja);color:var(--morado);padding:.6rem 1rem;z-index:100;font-weight:700}
+.saltar:focus{left:.5rem;top:.5rem}
+
+/* Barra de progreso */
+#progreso{position:fixed;inset:0 0 auto 0;height:4px;z-index:60;background:linear-gradient(90deg,var(--naranja),var(--rosa));transform-origin:left;transform:scaleX(0)}
+
+/* Cabecera */
+.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.55rem 1rem;background:rgba(50,27,70,.96);color:var(--blanco);backdrop-filter:blur(8px)}
+.marca{display:flex;align-items:center;gap:.5rem;color:var(--blanco);text-decoration:none;font-family:var(--serif);font-weight:700}
+.top nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--morado);padding:.5rem 1rem 1rem;flex-direction:column}
+.top nav.abierto{display:flex}
+.top nav a{color:var(--blanco);text-decoration:none;padding:.7rem .25rem;border-bottom:1px solid #ffffff22}
+.herr{display:flex;gap:.35rem}
+.herr button{min-width:44px;min-height:44px;border:1px solid #ffffff55;background:transparent;color:var(--blanco);border-radius:12px;font:700 1rem var(--sans);cursor:pointer}
+.herr button:hover{background:#ffffff1f}
+
+/* Inicio */
+.hero{position:relative;overflow:hidden;color:var(--blanco);padding:4rem 0 5rem;min-height:88vh;display:flex;align-items:center;background:radial-gradient(120% 90% at 85% 10%,#70418D 0%,#321B46 62%)}
+.hero .wrap{position:relative;z-index:2}
+.camp{color:var(--rosa);font-weight:600;margin:0 0 1rem}
+h1{font-size:clamp(3.6rem,17vw,9rem);font-weight:900;letter-spacing:-.03em;margin-bottom:1.5rem}
+.lema{font-family:var(--serif);font-size:clamp(1.3rem,4.5vw,2rem);margin:0 0 1.25rem;color:var(--rosa)}
+.intro{max-width:34rem;color:#EBDFF2;margin:0 0 2rem}
+.acciones{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-block;padding:.85rem 1.4rem;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid transparent;text-align:center}
+.naranja{background:var(--naranja);color:var(--morado)}
+.naranja:hover{background:#ff9d4d}
+.borde{border-color:var(--rosa);color:var(--blanco)}
+.borde:hover{background:#ffffff1a}
+.hero-mar{position:absolute;right:-12%;top:8%;width:min(75vw,560px);opacity:.9;transform:rotate(12deg);animation:entra 1.6s ease-out both}
+.hero-rama{position:absolute;color:var(--lavanda);opacity:.35;bottom:-20px}
+.r1{left:-14px;width:110px;transform:rotate(-8deg)}
+.r2{right:8%;width:150px;transform:rotate(10deg)}
+/* Único movimiento destacado: las alas se abren al cargar */
+.ala{transform-box:fill-box;animation:aleteo 1.8s ease-out both}
+.ala-i{transform-origin:right center}.ala-d{transform-origin:left center}
+@keyframes aleteo{0%{transform:scaleX(.15)}60%{transform:scaleX(1.05)}100%{transform:scaleX(1)}}
+@keyframes entra{from{opacity:0;transform:translateY(30px) rotate(12deg)}}
+
+/* Secciones */
+.sec{padding:4.5rem 0}
+.alt{background:var(--bg2)}
+h2{font-size:clamp(2rem,6vw,3.2rem);font-weight:700;margin-bottom:1rem;color:var(--tinta)}
+h2::after{content:"";display:block;width:64px;height:10px;margin-top:.8rem;border-radius:0 100% 0 100%;background:var(--naranja)}
+.sub{color:var(--suave);max-width:38rem;margin:0 0 2rem}
+.dos{display:grid;gap:2rem}
+.grande{font-family:var(--serif);font-size:clamp(1.25rem,3.6vw,1.7rem);line-height:1.4}
+.texto p{max-width:36rem}
+.lugares{display:flex;flex-wrap:wrap;gap:.5rem;padding:0;list-style:none}
+.lugares li{padding:.35rem .9rem;border-radius:999px;background:var(--tarjeta);border:1px solid var(--linea)}
+
+/* Tarjetas de tipos */
+.rejilla{display:grid;gap:1rem;grid-template-columns:1fr}
+.tipo{background:var(--tarjeta);border:1px solid var(--linea);border-radius:20px 20px 20px 4px;padding:1.2rem;text-align:left;font:inherit;color:inherit;cursor:pointer;width:100%;transition:transform .2s,box-shadow .2s}
+.tipo:hover{transform:translateY(-3px);box-shadow:0 10px 24px #321B4622}
+.tipo svg{width:34px;height:34px;stroke:var(--enlace);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tipo h3{font-size:1.4rem;margin:.6rem 0 .3rem}
+.tipo p{margin:0;color:var(--suave)}
+.tipo .ej{display:none;margin-top:.8rem;padding-top:.8rem;border-top:1px dashed var(--lavanda);color:var(--tinta)}
+.tipo[aria-expanded="true"]{border-color:var(--violeta)}
+.tipo[aria-expanded="true"] .ej{display:block}
+.mas{display:block;margin-top:.6rem;font-size:.9rem;font-weight:700;color:var(--enlace)}
+
+/* Leyes */
+.leyes{display:grid;gap:1.25rem}
+.ley{background:var(--tarjeta);border-left:6px solid var(--lavanda);border-radius:6px 20px 20px 6px;padding:1.3rem 1.4rem}
+.ley h3{font-size:1.3rem;margin-bottom:.6rem}
+.ley ul{padding-left:1.1rem;margin:0 0 .8rem}
+.ley a{font-weight:700}
+
+/* Ayuda */
+.ayuda{background:linear-gradient(160deg,#321B46,#70418D);color:var(--blanco)}
+.ayuda h2{color:var(--blanco)}
+.aviso{background:#F5EFF8;color:#321B46;border-left:8px solid var(--naranja);padding:1.1rem 1.3rem;border-radius:8px;font-size:1.1rem;max-width:46rem;margin:0 0 2rem}
+.tels{display:grid;gap:1rem}
+.tel{background:#F5EFF8;color:#321B46;border-radius:20px;padding:1.3rem;display:flex;flex-direction:column;gap:.6rem}
+.tel[hidden]{display:none}
+.tel h3{font-size:2.6rem;font-weight:900;color:var(--violeta)}
+.tel p{margin:0;flex:1}
+.urgente{outline:4px solid var(--naranja)}
+.nota{color:#EBDFF2;margin-top:1.5rem;font-size:.95rem}
+
+/* Palabras */
+.palabras{display:flex;flex-wrap:wrap;gap:.75rem}
+.palabra{border:2px solid var(--violeta);background:transparent;color:var(--tinta);font:700 1.15rem var(--serif);letter-spacing:.04em;padding:.7rem 1.2rem;border-radius:999px 999px 999px 8px;cursor:pointer;text-align:left;transition:background .2s}
+.palabra:hover{background:var(--bg2)}
+.palabra[aria-expanded="true"]{background:var(--violeta);color:#fff}
+.palabra small{display:none;font:400 .95rem var(--sans);letter-spacing:0;margin-top:.2rem}
+.palabra[aria-expanded="true"] small{display:block}
+
+/* Frases */
+.frases{background:var(--morado);color:var(--blanco)}
+.frases h2{color:var(--blanco)}
+.frases-l{list-style:none;padding:0;margin:2rem 0 0;display:grid;gap:1.8rem}
+.frases-l li{font-family:var(--serif);font-size:clamp(1.5rem,5vw,2.6rem);font-weight:500;line-height:1.2;padding-left:1.2rem;border-left:5px solid var(--naranja)}
+.frases-l li:nth-child(even){color:var(--rosa);margin-left:clamp(0rem,6vw,4rem)}
+
+/* Pie */
+.pie{background:#1C0F28;color:#D5C3E2;padding:3rem 0 6rem;text-align:center}
+.pie-t{font-family:var(--serif);font-weight:900;font-size:1.6rem;color:#fff;margin:.5rem 0}
+.pie h3{font-size:1.1rem;margin:1.5rem 0 .5rem;color:#fff}
+.pie a{color:var(--rosa)}
+.fuentes{list-style:none;padding:0;margin:0}
+.fuentes li{margin:.4rem 0}
+.peq{font-size:.9rem;margin-top:1.5rem}
+
+/* Botones flotantes */
+.flota{position:fixed;left:1rem;bottom:1rem;z-index:55;background:var(--naranja);color:var(--morado);font-weight:700;text-decoration:none;padding:.8rem 1.2rem;border-radius:999px;box-shadow:0 6px 18px #0005}
+.salir{position:fixed;right:1rem;bottom:1rem;z-index:55;background:#fff;color:#321B46;border:2px solid #321B46;font:700 .9rem var(--sans);padding:.75rem 1rem;border-radius:999px;cursor:pointer}
+
+/* Aparición al desplazarse (solo con JS activo) */
+.js .rev{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.js .rev.vis{opacity:1;transform:none}
+
+@media (min-width:700px){
+  .rejilla{grid-template-columns:repeat(2,1fr)}
+  .tels{grid-template-columns:repeat(2,1fr)}
+  .dos{grid-template-columns:1fr 1fr;align-items:start}
+}
+@media (min-width:960px){
+  .top nav{display:flex;position:static;flex-direction:row;background:none;padding:0;gap:1rem}
+  .top nav a{border:0;padding:.4rem .2rem;font-size:.95rem}
+  #burger{display:none}
+  .rejilla{grid-template-columns:repeat(4,1fr)}
+  .tels{grid-template-columns:repeat(4,1fr)}
+  .leyes{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .js .rev{opacity:1;transform:none}
+}
+
+svg{max-width:100%}
+.hero-mar{height:auto}.hero-rama{height:auto}
+</style>
 </head>
 <body>
 <!-- Símbolos SVG reutilizables: mariposa y ramita botánica -->
@@ -52,9 +205,9 @@
 <main id="contenido">
 <!-- INICIO -->
 <section id="inicio" class="hero">
-  <svg class="hero-mar" viewBox="0 0 200 160" aria-hidden="true"><use href="#mariposa"/></svg>
-  <svg class="hero-rama r1" viewBox="0 0 120 220" aria-hidden="true"><use href="#ramita"/></svg>
-  <svg class="hero-rama r2" viewBox="0 0 120 220" aria-hidden="true"><use href="#ramita"/></svg>
+  <svg class="hero-mar" width="560" height="448" viewBox="0 0 200 160" aria-hidden="true"><use href="#mariposa"/></svg>
+  <svg class="hero-rama r1" width="110" height="202" viewBox="0 0 120 220" aria-hidden="true"><use href="#ramita"/></svg>
+  <svg class="hero-rama r2" width="150" height="275" viewBox="0 0 120 220" aria-hidden="true"><use href="#ramita"/></svg>
   <div class="wrap">
     <p class="camp">Campaña escolar de concientización</p>
     <h1>Libres<br>y sin<br>miedo</h1>
@@ -120,7 +273,7 @@
       <article class="tel urgente"><h3>911</h3><p><b>Emergencias nacionales.</b> Para situaciones de peligro inmediato.</p><a class="btn naranja" href="tel:911">Llamar al 911</a></article>
       <article class="tel"><h3>079</h3><p><b>Línea de las Mujeres.</b> Orientación jurídica y apoyo psicoemocional. Al contestar, elige la <b>opción 1</b>.</p><a class="btn naranja" href="tel:079">Llamar al 079</a></article>
       <article class="tel"><h3>089</h3><p><b>Denuncia anónima.</b> No sustituye al 911 en emergencias.</p><a class="btn naranja" href="tel:089">Llamar al 089</a></article>
-      <!-- Se muestra solo si CONFIG.municipalVerificado = true en js/script.js -->
+      <!-- Se muestra solo si CONFIG.municipalVerificado = true en el bloque CONFIG de este archivo -->
       <article class="tel" id="tel-municipal" hidden><h3>229 265 7587</h3><p><b>Instituto Municipal de las Mujeres de Veracruz.</b> Atención municipal: no cubre todo el estado.</p><a class="btn naranja" href="tel:+522292657587">Llamar</a></article>
     </div>
     <p class="nota">Los números y horarios pueden cambiar: consulta los sitios oficiales del Gobierno de México y del Instituto Veracruzano de las Mujeres.</p>
@@ -164,6 +317,160 @@
 
 <a class="flota" href="#ayuda">Pedir ayuda</a>
 <button id="salir" class="salir" aria-label="Salida rápida: abre otra página">Salir rápido</button>
-<script src="script.js"></script>
+<script>
+/* ===== LIBRES Y SIN MIEDO — script.js (JavaScript vanilla) ===== */
+
+/* ---- CONFIGURACIÓN: edita aquí antes de publicar ----
+   Cambia municipalVerificado a true SOLO después de confirmar por teléfono o en el
+   sitio oficial del Ayuntamiento que 229 265 7587 sigue activo y su horario. */
+const CONFIG = {
+  municipalVerificado: false,
+  salidaRapida: 'https://es.wikipedia.org/wiki/Mariposa'
+};
+
+/* ---- CONTENIDO (fácil de modificar) ---- */
+const TIPOS = [
+  { n: 'Psicológica', i: '<circle cx="12" cy="12" r="9"/><path d="M8 15c1.2 1.4 6.8 1.4 8 0M9 9.5h.01M15 9.5h.01"/>',
+    d: 'Daña la autoestima y la estabilidad emocional.',
+    e: 'Insultos, amenazas, humillaciones, vigilar con quién hablas o a dónde vas, o hacerte sentir culpable de todo.' },
+  { n: 'Física', i: '<path d="M7 11V6a1.5 1.5 0 013 0v4m0-1V4.5a1.5 1.5 0 013 0V10m0-3.5a1.5 1.5 0 013 0V14c0 4-2.5 6-5.5 6S6 18 5 15l-1-3a1.4 1.4 0 012.5-1z"/>',
+    d: 'Actos que provocan daño al cuerpo mediante la fuerza u otros medios.',
+    e: 'Golpes, empujones, jalones o usar objetos para lastimar. Aunque no deje marcas, es violencia.' },
+  { n: 'Sexual', i: '<path d="M12 21s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.4-7 10-7 10z"/>',
+    d: 'Actos que vulneran la libertad y autonomía sexual sin consentimiento.',
+    e: 'Tocamientos no deseados, comentarios sexuales que incomodan o presión para tener relaciones. Sin consentimiento, no hay permiso.' },
+  { n: 'Económica', i: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-1.9-.4-2.5-1.2M12 6.5v1.5m0 8v1.5"/>',
+    d: 'Controlar o limitar los recursos económicos de una mujer.',
+    e: 'Impedir que trabajes o estudies, quitarte tu dinero, negarte lo necesario para vivir o exigir cuentas de cada gasto.' },
+  { n: 'Patrimonial', i: '<path d="M4 11l8-7 8 7v9H4zM10 20v-6h4v6"/>',
+    d: 'Retener, destruir o quitar documentos, bienes u objetos personales.',
+    e: 'Esconder tu identificación o acta de nacimiento, romper tu celular o tus útiles, o vender tus cosas sin permiso.' },
+  { n: 'Digital', i: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+    d: 'Agresiones mediante tecnologías: difundir contenido íntimo sin consentimiento, entre otras.',
+    e: 'Compartir fotos o videos íntimos sin permiso, acosar por redes, crear perfiles falsos para dañar o revisar tu celular a la fuerza.' },
+  { n: 'Obstétrica', i: '<path d="M12 4a3 3 0 100 6 3 3 0 000-6zM6 21c0-4 2.5-7 6-7s6 3 6 7"/>',
+    d: 'Maltrato y vulneración de la autonomía durante la atención del embarazo, parto o posparto.',
+    e: 'Ignorar tu opinión, regañarte o burlarte durante el parto, o hacer procedimientos sin explicarte ni pedir tu consentimiento.' },
+  { n: 'Mediática', i: '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/>',
+    d: 'Difusión de contenidos que promueven estereotipos sexistas o violencia contra las mujeres.',
+    e: 'Anuncios, programas o publicaciones que presentan a las mujeres como objetos o que justifican las agresiones.' }
+];
+
+const PALABRAS = [
+  ['LIBERTAD', 'Poder decidir sobre nuestra propia vida.'],
+  ['RESPETO', 'Reconocer la dignidad y los derechos de todas.'],
+  ['IGUALDAD', 'Las mismas oportunidades y derechos.'],
+  ['DIGNIDAD', 'Toda persona merece un trato humano.'],
+  ['AUTONOMÍA', 'Tener libertad para tomar decisiones.'],
+  ['SEGURIDAD', 'Vivir sin amenazas ni violencia.'],
+  ['JUSTICIA', 'Acceso a protección y reparación.'],
+  ['SORORIDAD', 'Apoyo y solidaridad entre mujeres.']
+];
+
+const FRASES = [
+  'Mi voz merece ser escuchada.',
+  'El respeto no es negociable.',
+  'Ninguna forma de violencia es normal.',
+  'Todas tenemos derecho a decidir.',
+  'Vivir sin miedo es un derecho, no un privilegio.'
+];
+
+/* ---- Utilidades ---- */
+const $ = (s, c = document) => c.querySelector(s);
+document.documentElement.classList.add('js');
+
+/* ---- Render de tarjetas, palabras y frases ---- */
+$('#rejilla-tipos').innerHTML = TIPOS.map(t => `
+  <button class="tipo rev" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true">${t.i}</svg>
+    <h3>${t.n}</h3><p>${t.d}</p>
+    <span class="ej"><b>Ejemplos:</b> ${t.e}</span>
+    <span class="mas" aria-hidden="true">Ver ejemplos</span>
+  </button>`).join('');
+
+$('#palabras-lista').innerHTML = PALABRAS.map(([p, d]) =>
+  `<button class="palabra rev" aria-expanded="false">${p}<small>${d}</small></button>`).join('');
+
+$('#frases-lista').innerHTML = FRASES.map(f => `<li class="rev">${f}</li>`).join('');
+
+/* Alternar tarjetas y palabras (accesible: aria-expanded) */
+document.addEventListener('click', e => {
+  const b = e.target.closest('.tipo, .palabra');
+  if (!b) return;
+  const abierto = b.getAttribute('aria-expanded') === 'true';
+  b.setAttribute('aria-expanded', String(!abierto));
+  const mas = $('.mas', b);
+  if (mas) mas.textContent = abierto ? 'Ver ejemplos' : 'Ocultar ejemplos';
+});
+
+/* ---- Teléfono municipal: solo visible si fue verificado ---- */
+if (CONFIG.municipalVerificado) $('#tel-municipal').hidden = false;
+
+/* ---- Menú móvil ---- */
+const menu = $('#menu'), burger = $('#burger');
+burger.addEventListener('click', () => {
+  const abre = !menu.classList.contains('abierto');
+  menu.classList.toggle('abierto', abre);
+  burger.setAttribute('aria-expanded', String(abre));
+  burger.setAttribute('aria-label', abre ? 'Cerrar menú' : 'Abrir menú');
+});
+menu.addEventListener('click', e => {
+  if (e.target.tagName === 'A') { menu.classList.remove('abierto'); burger.setAttribute('aria-expanded', 'false'); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && menu.classList.contains('abierto')) { menu.classList.remove('abierto'); burger.focus(); }
+});
+
+/* ---- Barra de progreso de lectura ---- */
+const barra = $('#progreso');
+function progreso() {
+  const total = document.documentElement.scrollHeight - innerHeight;
+  const p = total > 0 ? Math.min(1, scrollY / total) : 0;
+  barra.style.transform = `scaleX(${p})`;
+  barra.setAttribute('aria-valuenow', Math.round(p * 100));
+}
+addEventListener('scroll', progreso, { passive: true });
+progreso();
+
+/* ---- Tema claro/oscuro (se recuerda la preferencia en este dispositivo) ---- */
+const raiz = document.documentElement, btnTema = $('#tema');
+function aplicarTema(t) {
+  raiz.dataset.theme = t;
+  btnTema.setAttribute('aria-pressed', String(t === 'dark'));
+}
+let guardado = null;
+try { guardado = localStorage.getItem('lsm-tema'); } catch (_) {}
+aplicarTema(guardado || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+btnTema.addEventListener('click', () => {
+  const t = raiz.dataset.theme === 'dark' ? 'light' : 'dark';
+  aplicarTema(t);
+  try { localStorage.setItem('lsm-tema', t); } catch (_) {}
+});
+
+/* ---- Tamaño de texto ---- */
+let tam = 17; // px
+try { tam = parseInt(localStorage.getItem('lsm-tam')) || 17; } catch (_) {}
+function ponerTam(n) {
+  tam = Math.max(14, Math.min(24, n));
+  raiz.style.setProperty('--base', tam + 'px');
+  try { localStorage.setItem('lsm-tam', tam); } catch (_) {}
+}
+ponerTam(tam);
+$('#aMas').addEventListener('click', () => ponerTam(tam + 2));
+$('#aMenos').addEventListener('click', () => ponerTam(tam - 2));
+
+/* ---- Aparición suave al desplazarse ---- */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(x => {
+    if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); }
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.rev').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.rev').forEach(el => el.classList.add('vis'));
+}
+
+/* ---- Salida rápida: reemplaza la página por otra neutra ---- */
+$('#salir').addEventListener('click', () => location.replace(CONFIG.salidaRapida));
+</script>
 </body>
 </html>
